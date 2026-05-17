@@ -22,6 +22,8 @@ async def home(request: Request):
 @app.post("/convert", response_class=HTMLResponse)
 async def convert(request: Request, statement: str = Form(...)):
     prompt = f"""
+반드시 한국어로만 답변하세요. 다른 언어는 절대 사용하지 마세요.
+
 당신은 법률 문서 작성 전문가입니다.
 아래 피해자의 감정적인 진술을 육하원칙(누가, 언제, 어디서, 무엇을, 어떻게, 왜) 기반의
 객관적이고 법적으로 유효한 문체로 변환해주세요.

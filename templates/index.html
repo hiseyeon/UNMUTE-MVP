@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNMUTE - AI 진술 비서</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #212C4D; color: white; font-family: sans-serif; min-height: 100vh; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .logo { font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; }
+        .subtitle { color: #93C5FD; font-size: 14px; margin-bottom: 40px; }
+        .card { background: #1A2440; border-radius: 14px; padding: 24px; margin-bottom: 20px; border: 1px solid #2A3A6A; }
+        .label { font-size: 12px; color: #60A5FA; font-weight: 500; margin-bottom: 12px; }
+        textarea { width: 100%; background: #0F1A35; border: 1px solid #2A3A6A; border-radius: 8px; color: white; padding: 16px; font-size: 14px; resize: vertical; min-height: 120px; font-family: sans-serif; }
+        textarea:focus { outline: none; border-color: #3B82F6; }
+        button { width: 100%; background: linear-gradient(90deg, #3B82F6, #06B6D4); color: white; border: none; border-radius: 10px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+        button:hover { opacity: 0.9; }
+        .result { background: #0F1A35; border-radius: 8px; padding: 16px; font-size: 14px; line-height: 1.8; color: #E2E8F0; white-space: pre-wrap; min-height: 120px; border: 1px solid #3B82F6; }
+        .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin-bottom: 12px; }
+        .tag-before { background: #2A1A1A; color: #EF4444; border: 1px solid #EF4444; }
+        .tag-after { background: #1A2A1A; color: #22D3EE; border: 1px solid #22D3EE; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">UNMUTE</div>
+        <div class="subtitle">당신의 이야기, 이제 법이 알아듣는 말로.</div>
+
+        <div class="card">
+            <div class="label">BEFORE — 피해자의 진술을 입력하세요</div>
+            <span class="tag tag-before">감정적 진술</span>
+            <form method="post" action="/convert">
+                <textarea name="statement" placeholder="예) 인수인계 중요한 정보를 일부러 안 알려줘서 너무 힘들어요. 병원 가는 게 무섭고 잠도 못 자요.">{{ before }}</textarea>
+                <button type="submit">AI로 법률 문체 변환하기 →</button>
+            </form>
+        </div>
+
+        {% if after %}
+        <div class="card">
+            <div class="label">AFTER — AI가 구조화한 법률 진술</div>
+            <span class="tag tag-after">법률 문체</span>
+            <div class="result">{{ after }}</div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

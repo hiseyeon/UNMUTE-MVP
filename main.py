@@ -61,24 +61,32 @@ async def convert(request: Request, statement: str = Form(...)):
 
     # 3. 정상 변환
     prompt = f"""
-You must respond in Korean only. Do not use any other language including Japanese, Chinese characters, or English.
+You must respond in Korean (Hangul) ONLY. 
+Using any other language (Japanese, Chinese characters, Russian, English, etc.) is strictly forbidden.
 
 당신은 한국 법률 문서 전문가입니다.
 아래 피해자의 진술을 읽고, 진술에 포함된 실제 내용을 바탕으로 법률 문체로 변환하세요.
 
-절대 규칙:
-- 오직 한국어(한글)만 사용. 한자, 일본어, 영어 절대 금지
-- 한글 자모(가-힣) 이외의 문자는 숫자와 punctuation(. , ! ? 등)을 제외하고 절대 사용 금지
-- 진술에 없는 내용을 (미상)으로 채우지 말 것
-- 진술에 있는 내용만 사용해서 작성할 것
-- 육하원칙 중 진술에 있는 항목만 포함할 것
-- 감정적 표현을 객관적 사실로 변환할 것
-- 법률 문서 형식으로 작성할 것
+[언어 규칙 - 절대 위반 금지]
+- 한국어(한글)만 사용
+- 한자 절대 금지 (예: 不, 愉, 快 등)
+- 일본어 절대 금지
+- 러시아어 절대 금지
+- 영어 절대 금지
+- 허용 문자: 한글, 숫자, 문장부호(. , ? ! 등)만 허용
+
+[작성 규칙]
+- 진술에 있는 내용만 사용
+- 진술에 없는 내용 추가 금지
+- (미상) 표현 사용 금지
+- 감정적 표현을 객관적 사실로 변환
+- 육하원칙 중 진술에 있는 항목만 포함
+- 법률 문서 형식으로 작성
 
 피해자 진술:
 {statement}
 
-위 진술을 한국어 법률 문체로 변환:
+위 진술을 한국어 법률 문체로 변환 (한글만 사용):
 """
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",

@@ -62,36 +62,34 @@ async def convert(request: Request, statement: str = Form(...)):
 
     # 3. 정상 변환
     prompt = f"""
-You must respond in Korean only. Do not use any other language including Japanese, Chinese characters, Russian, or English.
+절대 규칙: 한자(CJK 통합 한자 포함)는 단 한 글자도 사용 금지.
+You must respond in Korean Hangul only. CJK characters are strictly forbidden.
 
 당신은 한국 법률 문서 전문가입니다.
-아래 피해자의 진술을 읽고, 반드시 아래 형식으로만 작성하세요.
-
-[출력 형식 - 반드시 이 형식 그대로 출력]
+반드시 아래 형식 그대로만 출력하세요. 형식 외 내용 절대 금지.
 
 ■ 육하원칙 정리
-- 누가: (행위자)
-- 언제: (일시)
-- 어디서: (장소)
-- 무엇을: (행위 대상)
-- 어떻게: (행위 방법)
-- 왜: (행위 목적 또는 이유)
+- 누가:
+- 언제:
+- 어디서:
+- 무엇을:
+- 어떻게:
+- 왜:
 
 ■ 사건 개요
-(진술에 있는 내용을 바탕으로 객관적 문장으로 작성)
 
 ■ 행위 내용
-(가해자의 구체적 행위를 객관적으로 서술)
 
 ■ 피해 결과
-(피해자가 입은 피해를 객관적으로 서술)
+
+위 4개 항목만 출력. 다른 문장, 머리말, 맺음말 절대 금지.
 
 [작성 규칙]
-- 반드시 한국어(한글)만 사용
-- 한자, 일본어, 러시아어, 영어 절대 금지
+- 한글, 숫자, 문장부호만 사용
+- 한자 절대 금지
 - 진술에 없는 내용은 "확인되지 않음"으로 표기
-- (미상) 표현 사용 금지
-- 감정적 표현 제거, 객관적 사실만 서술
+- 감정적 표현 제거
+- 객관적 사실만 서술
 
 피해자 진술:
 {statement}
@@ -103,7 +101,7 @@ You must respond in Korean only. Do not use any other language including Japanes
         messages=[{"role": "user", "content": prompt}]
     )
 
-    # 4. 한글 외 문자 제거
+    # 4. 한글 외 문자 제거 (한자 유니코드 범위 포함)
     after = response.choices[0].message.content
     after = re.sub(r'[^\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F0-9\s\.\,\!\?\:\;\-\(\)\"\'\n■]', '', after)
 
